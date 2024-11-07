@@ -91,7 +91,6 @@ public partial class StateController : MonoBehaviour
             Obj[i] = gameObject.transform.GetChild(i).gameObject;
         }
         LastWaitTime = Time.time;
-        Debug.Log(LastWaitTime);
         currentState.OnEnter(this, null);
     }
 
@@ -100,7 +99,7 @@ public partial class StateController : MonoBehaviour
     {
         currentState.OnUpdate(this);
 
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetKeyDown(KeyCode.Return))
         {
             OnClick();
         }
@@ -133,7 +132,6 @@ public partial class StateController : MonoBehaviour
         {
             Debug.Log(this.GetType().Name + " に移行しました");
         }
-
 
         public override void OnClick(StateController owner)
         {
@@ -204,6 +202,11 @@ public partial class StateController : MonoBehaviour
             owner.ChangeState(stateSecondStopButton);
         }
 
+        public override void OnExit(StateController owner, StateBase nextState)
+        {
+            Obj[(int)Slot_Parts.E_SLOT_PARTS_REEL].GetComponent<ReelController>().ControlReel(ReelController.ReelPosition.E_REEL_POS_L);
+        }
+
     }
 
     public class StateSecondStopButton : StateBase
@@ -219,6 +222,10 @@ public partial class StateController : MonoBehaviour
             Obj[(int)Slot_Parts.E_SLOT_PARTS_REEL].GetComponent<ReelController>().StopReel(ReelController.ReelPosition.E_REEL_POS_C);
             // ステート変更します。次は stateLeverOn
             owner.ChangeState(stateThirdStopButton);
+        }
+        public override void OnExit(StateController owner, StateBase nextState)
+        {
+            Obj[(int)Slot_Parts.E_SLOT_PARTS_REEL].GetComponent<ReelController>().ControlReel(ReelController.ReelPosition.E_REEL_POS_C);
         }
 
     }
@@ -236,6 +243,11 @@ public partial class StateController : MonoBehaviour
             Obj[(int)Slot_Parts.E_SLOT_PARTS_REEL].GetComponent<ReelController>().StopReel(ReelController.ReelPosition.E_REEL_POS_R);
             // ステート変更します。次は stateLeverOn
             owner.ChangeState(stateWinner);
+        }
+
+        public override void OnExit(StateController owner, StateBase nextState)
+        {
+            Obj[(int)Slot_Parts.E_SLOT_PARTS_REEL].GetComponent<ReelController>().ControlReel(ReelController.ReelPosition.E_REEL_POS_R);
         }
 
     }

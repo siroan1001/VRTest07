@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8323480465148402627}
   - component: {fileID: 6450793184511785284}
+  - component: {fileID: 2396882553483037128}
   m_Layer: 0
   m_Name: Reel_C
   m_TagString: Untagged
@@ -43,6 +44,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d5f63e3722541a14e95d84449ad037cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationTime: 0.754
+--- !u!114 &2396882553483037128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 29602003205137017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 638518d421a8a0b408c99268007ba5e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2182791044136251371
@@ -375,7 +389,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1801286531426355735}
   - component: {fileID: 8331276870142387556}
-  - component: {fileID: 6126786194032512508}
   m_Layer: 0
   m_Name: Reel
   m_TagString: Untagged
@@ -418,18 +431,6 @@ MonoBehaviour:
   - {fileID: 29602003205137017}
   - {fileID: 7027857159010344292}
   RotValue: 300
---- !u!114 &6126786194032512508
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3276455993075232887}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8cee4724e2238cc4ea098372f7c7f536, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3601211793678858324
 GameObject:
   m_ObjectHideFlags: 0
@@ -619,6 +620,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6083241245957935628}
   - component: {fileID: 8385429091056251911}
+  - component: {fileID: 4290367006635310247}
   m_Layer: 0
   m_Name: Reel_R
   m_TagString: Untagged
@@ -654,6 +656,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5f63e3722541a14e95d84449ad037cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotationTime: 0.754
+--- !u!114 &4290367006635310247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7027857159010344292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 638518d421a8a0b408c99268007ba5e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7759912603724483375
 GameObject:
   m_ObjectHideFlags: 0
@@ -664,6 +679,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6497378727608641383}
   - component: {fileID: 5603605106948974804}
+  - component: {fileID: 2491955750674267926}
   m_Layer: 0
   m_Name: Reel_L
   m_TagString: Untagged
@@ -697,6 +713,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d5f63e3722541a14e95d84449ad037cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationTime: 0.754
+--- !u!114 &2491955750674267926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7759912603724483375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 638518d421a8a0b408c99268007ba5e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8297339287998772956
