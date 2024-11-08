@@ -10,23 +10,17 @@ public class ReelLayer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
-    // Update is called once per frame
-    void Update()
-    {
+    //public int GetRotationLayer()
+    //{
+    //    float currentAngle = transform.eulerAngles.z;
+
+    //    int layer = Mathf.FloorToInt(currentAngle / LayerAngle);
         
-    }
+    //    //transform.GetComponent<ReelRotation>().ControlRotationReel(LayerAngle * (float)layer);
 
-    public int GetRotationLayer()
-    {
-        float currentAngle = transform.eulerAngles.z;
-
-        int layer = Mathf.FloorToInt(currentAngle / LayerAngle);
-        
-        transform.GetComponent<ReelRotation>().ControlRotationReel(LayerAngle * (float)layer);
-
-        return layer;
-    }
+    //    return layer;
+    //}
 }

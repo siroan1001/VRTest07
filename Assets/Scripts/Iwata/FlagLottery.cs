@@ -19,7 +19,8 @@ public class FlagLottery : MonoBehaviour
 
     private static readonly int[] FlagValue = { 327, 655, 1310, 436, 436, 13943, 13107};
 
-    public int _randomNumber; // フラグ抽選
+    private int _randomNumber; // フラグ抽選
+
 
     // Start is called before the first frame update
     void Start()
@@ -33,7 +34,7 @@ public class FlagLottery : MonoBehaviour
         
     }
 
-    public FlagType SetRandNum()
+    public FlagType RandFlag()
     {
         _randomNumber = Random.Range(0, 65535); // フラグ抽選
         FlagType type = FlagType.E_FLAG_TYPE_MAX;
@@ -51,5 +52,27 @@ public class FlagLottery : MonoBehaviour
 
         type = FlagType.E_FLAG_TYPE_MISS;
         return type;
+    }
+
+    public void Test()
+    {
+        int TestCase = 65536;
+        int[] Case = new int[(int)FlagType.E_FLAG_TYPE_MAX];
+        FlagType ans = 0;
+        float par = 0.0f;
+
+        for (int i = 0; i < TestCase; i++)
+        {
+            ans = RandFlag();
+
+            Case[(int)ans] += 1;
+        }
+
+        for (int i = 0; i < (int)FlagType.E_FLAG_TYPE_MAX; i++)
+        {
+            FlagType flag = (FlagType)i;
+            par = ((float)Case[i] / TestCase) * 100.0f;
+            Debug.Log(flag + " ： " + Case[i] + "(" + par + ")");
+        }
     }
 }

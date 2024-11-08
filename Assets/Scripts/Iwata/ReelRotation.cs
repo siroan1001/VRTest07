@@ -6,8 +6,9 @@ public class ReelRotation : MonoBehaviour
 {
     private bool RotFlag = false;
 
-    private float rotSpeed = 0.0f;
+    private float rotSpeed = 0.0f;      //‰ñ“]‘¬“x
     public float rotationTime = 0.754f; // ˆê‰ñ“]‚É‚©‚©‚éŽžŠÔ‚ð•b‚ÅŽw’è
+
 
     // Start is called before the first frame update
     void Start()

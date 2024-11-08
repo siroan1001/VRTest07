@@ -5,7 +5,7 @@ using State;
 
 public partial class StateController : MonoBehaviour
 {
-    enum Slot_Parts
+    enum ObjSlotParts
     {
         E_SLOT_PARTS_BUTTON = 0, 
         E_SLOT_PARTS_JUGGLER, 
@@ -29,7 +29,7 @@ public partial class StateController : MonoBehaviour
     }
 
 
-    public static GameObject[] Obj = new GameObject[(int)Slot_Parts.E_SLOT_PARTS_MAX];
+    public static GameObject[] Obj = new GameObject[(int)ObjSlotParts.E_SLOT_PARTS_MAX];
 
 
     // ステートのインスタンス  readonlyにすると値の変更がされない変数にできる（コンストラクタ内でのみ値を変更できる）
@@ -47,7 +47,15 @@ public partial class StateController : MonoBehaviour
     /// </summary>
     private StateBase currentState = stateMaxBet;
 
-    private static float LastWaitTime;
+    /// <summary>
+    /// 直前にウェイトが終了した時間
+    /// </summary>
+    private float LastWaitTime;
+
+    /// <summary>
+    /// その回転での成立役
+    /// </summary>
+    private FlagLottery.FlagType LotterResult;
 
     public bool CheckCurrentState(Slot_State state)
     {
@@ -86,11 +94,13 @@ public partial class StateController : MonoBehaviour
 
     private void Start()
     {
-        for(int i = 0; i < (int)Slot_Parts.E_SLOT_PARTS_MAX; i++)
+        for(int i = 0; i < (int)ObjSlotParts.E_SLOT_PARTS_MAX; i++)
         {
             Obj[i] = gameObject.transform.GetChild(i).gameObject;
         }
         LastWaitTime = Time.time;
+        LotterResult = FlagLottery.FlagType.E_FLAG_TYPE_MAX;
+        //Obj[(int)Slot_Parts.E_SLOT_PARTS_LEVER].GetComponent<FlagLottery>().Test();
         currentState.OnEnter(this, null);
     }
 
@@ -112,8 +122,6 @@ public partial class StateController : MonoBehaviour
     {
         currentState.OnClick(this);
     }
-
-
 
     // ステート変更
     public void ChangeState(StateBase nextState)
@@ -152,14 +160,16 @@ public partial class StateController : MonoBehaviour
 
         public override void OnClick(StateController owner)
         {
+            owner.LotterResult = Obj[(int)ObjSlotParts.E_SLOT_PARTS_LEVER].GetComponent<FlagLottery>().RandFlag();
+            Debug.Log("成立役：" + owner.LotterResult);
             // ステート変更します。次は stateLeverOn
             owner.ChangeState(stateWaitTime);
         }
 
-        public override void OnExit(StateController owner, StateBase nextState)
-        {
-            Obj[(int)Slot_Parts.E_SLOT_PARTS_REEL].GetComponent<ReelController>().StartReel();
-        }
+        //public override void OnExit(StateController owner, StateBase nextState)
+        //{
+        //    Obj[(int)ObjSlotParts.E_SLOT_PARTS_REEL].GetComponent<ReelController>().StartReel();
+        //}
     }
 
     public class StateWaitTime : StateBase
@@ -172,9 +182,9 @@ public partial class StateController : MonoBehaviour
         public override void OnUpdate(StateController owner)
         {
             float currentTime = Time.time;
-            if (currentTime - LastWaitTime >= 4.1f)
+            if (currentTime - owner.LastWaitTime >= 4.1f)
             {
-                LastWaitTime = currentTime;
+                owner.LastWaitTime = currentTime;
                 OnClick(owner);
             }
         }
@@ -183,6 +193,11 @@ public partial class StateController : MonoBehaviour
         {
             // ステート変更します。次は stateLeverOn
             owner.ChangeState(stateFirstStopButton);
+        }
+
+        public override void OnExit(StateController owner, StateBase nextState)
+        {
+            Obj[(int)ObjSlotParts.E_SLOT_PARTS_REEL].GetComponent<ReelController>().StartReel();
         }
 
     }
@@ -197,14 +212,14 @@ public partial class StateController : MonoBehaviour
 
         public override void OnClick(StateController owner)
         {
-            Obj[(int)Slot_Parts.E_SLOT_PARTS_REEL].GetComponent<ReelController>().StopReel(ReelController.ReelPosition.E_REEL_POS_L);
+            Obj[(int)ObjSlotParts.E_SLOT_PARTS_REEL].GetComponent<ReelController>().StopReel(ReelController.ReelPosition.E_REEL_POS_L);
             // ステート変更します。次は stateLeverOn
             owner.ChangeState(stateSecondStopButton);
         }
 
         public override void OnExit(StateController owner, StateBase nextState)
         {
-            Obj[(int)Slot_Parts.E_SLOT_PARTS_REEL].GetComponent<ReelController>().ControlReel(ReelController.ReelPosition.E_REEL_POS_L);
+            Obj[(int)ObjSlotParts.E_SLOT_PARTS_REEL].GetComponent<ReelController>().ControlReel(ReelController.ReelPosition.E_REEL_POS_L, owner.LotterResult);
         }
 
     }
@@ -219,13 +234,13 @@ public partial class StateController : MonoBehaviour
 
         public override void OnClick(StateController owner)
         {
-            Obj[(int)Slot_Parts.E_SLOT_PARTS_REEL].GetComponent<ReelController>().StopReel(ReelController.ReelPosition.E_REEL_POS_C);
+            Obj[(int)ObjSlotParts.E_SLOT_PARTS_REEL].GetComponent<ReelController>().StopReel(ReelController.ReelPosition.E_REEL_POS_C);
             // ステート変更します。次は stateLeverOn
             owner.ChangeState(stateThirdStopButton);
         }
         public override void OnExit(StateController owner, StateBase nextState)
         {
-            Obj[(int)Slot_Parts.E_SLOT_PARTS_REEL].GetComponent<ReelController>().ControlReel(ReelController.ReelPosition.E_REEL_POS_C);
+            Obj[(int)ObjSlotParts.E_SLOT_PARTS_REEL].GetComponent<ReelController>().ControlReel(ReelController.ReelPosition.E_REEL_POS_C, owner.LotterResult);
         }
 
     }
@@ -240,14 +255,14 @@ public partial class StateController : MonoBehaviour
 
         public override void OnClick(StateController owner)
         {
-            Obj[(int)Slot_Parts.E_SLOT_PARTS_REEL].GetComponent<ReelController>().StopReel(ReelController.ReelPosition.E_REEL_POS_R);
+            Obj[(int)ObjSlotParts.E_SLOT_PARTS_REEL].GetComponent<ReelController>().StopReel(ReelController.ReelPosition.E_REEL_POS_R);
             // ステート変更します。次は stateLeverOn
             owner.ChangeState(stateWinner);
         }
 
         public override void OnExit(StateController owner, StateBase nextState)
         {
-            Obj[(int)Slot_Parts.E_SLOT_PARTS_REEL].GetComponent<ReelController>().ControlReel(ReelController.ReelPosition.E_REEL_POS_R);
+            Obj[(int)ObjSlotParts.E_SLOT_PARTS_REEL].GetComponent<ReelController>().ControlReel(ReelController.ReelPosition.E_REEL_POS_R, owner.LotterResult);
         }
 
     }
