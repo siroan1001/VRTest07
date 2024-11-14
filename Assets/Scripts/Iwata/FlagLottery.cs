@@ -18,6 +18,7 @@ public class FlagLottery : MonoBehaviour
     }
 
     private static readonly int[] FlagValue = { 327, 655, 1310, 436, 436, 13943, 13107};
+    private static readonly int[] BounsValue = { 0, 0, 1310, 50, 50, 64126, 0};
 
     private int _randomNumber; // ƒtƒ‰ƒO’Š‘I
 
