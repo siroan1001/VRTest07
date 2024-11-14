@@ -12,6 +12,10 @@ public partial class StateController : MonoBehaviour
         E_SLOT_PARTS_LEVER, 
         E_SLOT_PARTS_REEL, 
         E_SLOT_PARTS_MAXBET, 
+        E_SLOT_PARTS_CREDITSEG, 
+        E_SLOT_PARTS_COUNTSEG, 
+        E_SLOT_PARTS_PAYOUTSEG, 
+        E_SLOT_PARTS_BOUNSLAMP, 
         E_SLOT_PARTS_MAX 
     }
 
@@ -57,6 +61,18 @@ public partial class StateController : MonoBehaviour
     /// </summary>
     private FlagLottery.FlagType LotterResult;
 
+    /// <summary>
+    /// ボーナス成立フラグ
+    /// </summary>
+    private bool BonusLamp;
+
+    private int BounsPayout;
+
+    /// <summary>
+    /// 子役成立フラグ
+    /// </summary>
+    private bool FlagLamp;
+
     public bool CheckCurrentState(Slot_State state)
     {
         switch(state)
@@ -100,6 +116,9 @@ public partial class StateController : MonoBehaviour
         }
         LastWaitTime = Time.time;
         LotterResult = FlagLottery.FlagType.E_FLAG_TYPE_MAX;
+        BonusLamp = false;
+        BounsPayout = 0;
+        FlagLamp = false;
         //Obj[(int)Slot_Parts.E_SLOT_PARTS_LEVER].GetComponent<FlagLottery>().Test();
         currentState.OnEnter(this, null);
     }
@@ -138,7 +157,9 @@ public partial class StateController : MonoBehaviour
     {
         public override void OnEnter(StateController owner, StateBase prevState)
         {
-            Debug.Log(this.GetType().Name + " に移行しました");
+            Obj[(int)ObjSlotParts.E_SLOT_PARTS_REEL].GetComponent<ReelController>().ResetReel();
+            owner.FlagLamp = false;
+            //Debug.Log(this.GetType().Name + " に移行しました");
         }
 
         public override void OnClick(StateController owner)
@@ -153,7 +174,7 @@ public partial class StateController : MonoBehaviour
     {
         public override void OnEnter(StateController owner, StateBase prevState)
         {
-            Debug.Log(this.GetType().Name + " に移行しました");
+            //Debug.Log(this.GetType().Name + " に移行しました");
         }
 
 
@@ -161,22 +182,23 @@ public partial class StateController : MonoBehaviour
         public override void OnClick(StateController owner)
         {
             owner.LotterResult = Obj[(int)ObjSlotParts.E_SLOT_PARTS_LEVER].GetComponent<FlagLottery>().RandFlag();
+            if (owner.LotterResult == FlagLottery.FlagType.E_FLAG_TYPE_BIG || owner.LotterResult == FlagLottery.FlagType.E_FLAG_TYPE_REG) owner.BonusLamp = true;
             Debug.Log("成立役：" + owner.LotterResult);
+            if(owner.LotterResult == FlagLottery.FlagType.E_FLAG_TYPE_BIG || owner.LotterResult == FlagLottery.FlagType.E_FLAG_TYPE_REG)
+            {
+                owner.BonusLamp = true;
+                Obj[(int)ObjSlotParts.E_SLOT_PARTS_BOUNSLAMP].GetComponent<BounsLampController>().LightOn();
+            }
             // ステート変更します。次は stateLeverOn
             owner.ChangeState(stateWaitTime);
         }
-
-        //public override void OnExit(StateController owner, StateBase nextState)
-        //{
-        //    Obj[(int)ObjSlotParts.E_SLOT_PARTS_REEL].GetComponent<ReelController>().StartReel();
-        //}
     }
 
     public class StateWaitTime : StateBase
     {
         public override void OnEnter(StateController owner, StateBase prevState)
         {
-            Debug.Log(this.GetType().Name + " に移行しました");
+            //Debug.Log(this.GetType().Name + " に移行しました");
         }
 
         public override void OnUpdate(StateController owner)
@@ -206,7 +228,7 @@ public partial class StateController : MonoBehaviour
     {
         public override void OnEnter(StateController owner, StateBase prevState)
         {
-            Debug.Log(this.GetType().Name + " に移行しました");
+            //Debug.Log(this.GetType().Name + " に移行しました");
         }
 
 
@@ -228,7 +250,7 @@ public partial class StateController : MonoBehaviour
     {
         public override void OnEnter(StateController owner, StateBase prevState)
         {
-            Debug.Log(this.GetType().Name + " に移行しました");
+           // Debug.Log(this.GetType().Name + " に移行しました");
         }
 
 
@@ -249,7 +271,7 @@ public partial class StateController : MonoBehaviour
     {
         public override void OnEnter(StateController owner, StateBase prevState)
         {
-            Debug.Log(this.GetType().Name + " に移行しました");
+           // Debug.Log(this.GetType().Name + " に移行しました");
         }
 
 
@@ -271,7 +293,16 @@ public partial class StateController : MonoBehaviour
     {
         public override void OnEnter(StateController owner, StateBase prevState)
         {
-            Debug.Log(this.GetType().Name + " に移行しました");
+            owner.FlagLamp = Obj[(int)ObjSlotParts.E_SLOT_PARTS_REEL].GetComponent<ReelController>().CheckWinCondition(owner.LotterResult);
+            Debug.Log(owner.LotterResult + "　　" + owner.FlagLamp);
+            if(owner.BonusLamp && owner.FlagLamp)
+            {
+                //ボーナス成立していたらやること
+                Obj[(int)ObjSlotParts.E_SLOT_PARTS_LEVER].GetComponent<FlagLottery>().BounsStart();
+                Obj[(int)ObjSlotParts.E_SLOT_PARTS_BOUNSLAMP].GetComponent<BounsLampController>().LightOff();
+                owner.BonusLamp = false;
+            }
+            //Debug.Log(this.GetType().Name + " に移行しました");
             //OnClick(owner);
         }
 
@@ -279,7 +310,6 @@ public partial class StateController : MonoBehaviour
         {
             OnClick(owner);
         }
-
 
         public override void OnClick(StateController owner)
         {
@@ -293,7 +323,11 @@ public partial class StateController : MonoBehaviour
     {
         public override void OnEnter(StateController owner, StateBase prevState)
         {
-            Debug.Log(this.GetType().Name + " に移行しました");
+            if(owner.FlagLamp)
+            {
+                owner.transform.GetComponent<MedalManager>().PayOut(owner.LotterResult);
+            }
+            //Debug.Log(this.GetType().Name + " に移行しました");
             //OnClick(owner);
         }
 
@@ -307,7 +341,6 @@ public partial class StateController : MonoBehaviour
             // ステート変更します。次は stateLeverOn
             owner.ChangeState(stateMaxBet);
         }
-
     }
 
     public StateBase CurrentState

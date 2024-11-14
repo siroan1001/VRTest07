@@ -28,10 +28,7 @@ public class CollisionControler : MonoBehaviour
             {
                 Parent.transform.GetComponent<StateController>().OnClick();
             }
-            //Debug.Log(f);
         }
-
-        
     }
 
     GameObject FindParentWithName(Transform child, string parentName)

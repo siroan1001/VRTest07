@@ -18,7 +18,7 @@ public class ReadCSVFile : MonoBehaviour
         
     }
 
-    public static List<string[]> ReadCSV(string FileName)
+    public static List<string[]> ReadCSV(string FileName, bool Reverse, bool Output)
     {
         List<string[]> _csvDatas = new List<string[]>();
 
@@ -29,29 +29,30 @@ public class ReadCSVFile : MonoBehaviour
         {
             string line = reader.ReadLine(); // 一行ずつ読み込み
 
-
-
-            List<string> reverseLine = new List<string>();
-            reverseLine = line.Split(',').ToList();
-            //string temp_flagName = reverseLine[0];  // フラグ名をよせておく
-            //reverseLine.RemoveAt(0); // フラグ名を最後尾にする
-            //reverseLine.Add(temp_flagName);
-            reverseLine.Reverse();  // CSVの並びをひっくり返す
-            string joinLine = string.Join(",", reverseLine);
-
-
-
-            _csvDatas.Add(joinLine.Split(',')); // , 区切りでリストに追加
+            if (Reverse)
+            {
+                List<string> reverseLine = new List<string>();
+                reverseLine = line.Split(',').ToList();
+                reverseLine.Reverse();  // CSVの並びをひっくり返す
+                string joinLine = string.Join(",", reverseLine);
+                _csvDatas.Add(joinLine.Split(',')); // , 区切りでリストに追加
+            }
+            else
+            {
+                _csvDatas.Add(line.Split(',')); // , 区切りでリストに追加
+            }
         }
 
-        //for(int i = 0; i < _csvDatas.Count; i++)
-        //{
-        //    for(int j = 0; j < _csvDatas[i].Length; j++)
-        //    {
-        //        Debug.Log("[" + i + "] [" + j + "] " + _csvDatas[i][j]);
-        //    }
-        //}
-
+        if (Output)
+        {
+            for (int i = 0; i < _csvDatas.Count; i++)
+            {
+                for (int j = 0; j < _csvDatas[i].Length; j++)
+                {
+                    Debug.Log("[" + i + "] [" + j + "] " + _csvDatas[i][j]);
+                }
+            }
+        }
         return _csvDatas;
     }
 }

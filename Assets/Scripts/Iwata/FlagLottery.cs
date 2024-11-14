@@ -21,21 +21,24 @@ public class FlagLottery : MonoBehaviour
 
     private int _randomNumber; // フラグ抽選
 
+    private bool BounsLamp;     //ボーナス中フラグ
+
+    private bool BounsLock;     //ボーナス当選時再度抽選を行わないためのフラグ
+    private FlagType BounsFlag;     //ボーナス当選時再度抽選を行わないためのフラグ
+
 
     // Start is called before the first frame update
     void Start()
     {
         _randomNumber = 0;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        BounsLamp = false;
+        BounsFlag = FlagType.E_FLAG_TYPE_MAX;
     }
 
     public FlagType RandFlag()
     {
+        if (BounsFlag != FlagType.E_FLAG_TYPE_MAX) return BounsFlag;
+
         _randomNumber = Random.Range(0, 65535); // フラグ抽選
         FlagType type = FlagType.E_FLAG_TYPE_MAX;
 
@@ -46,12 +49,17 @@ public class FlagLottery : MonoBehaviour
             if(_randomNumber <= 0)
             {
                 type = (FlagType)i;
-                return type;
+                if(type == FlagType.E_FLAG_TYPE_BIG || type == FlagType.E_FLAG_TYPE_REG)
+                {
+                    BounsFlag = type;
+                }
+                //return type;
             }
         }
 
         type = FlagType.E_FLAG_TYPE_MISS;
-        return type;
+        //return type;
+        return FlagType.E_FLAG_TYPE_REG;
     }
 
     public void Test()
@@ -74,5 +82,21 @@ public class FlagLottery : MonoBehaviour
             par = ((float)Case[i] / TestCase) * 100.0f;
             Debug.Log(flag + " ： " + Case[i] + "(" + par + ")");
         }
+    }
+
+    public void BounsStart()
+    {
+        BounsLamp = true;
+        BounsFlag = FlagType.E_FLAG_TYPE_MAX;
+    }
+
+    public void BounsEnd()
+    {
+        BounsLamp = false;
+    }
+
+    public FlagType Bounsflag
+    {
+        get { return BounsFlag; }
     }
 }
