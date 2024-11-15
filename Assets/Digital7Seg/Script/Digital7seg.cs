@@ -12,7 +12,7 @@ public class Digital7seg : MonoBehaviour
         GetChildlens();
         InitSegment();
         Seg num = new Seg();
-        foreach (var n in num.nine)
+        foreach (var n in num.zero)
         {
             segs[n].SetActive(true);
         }
