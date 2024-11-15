@@ -15,19 +15,20 @@ public class BounsLampController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.L))
-        {
-            LightOn();
-        }
-        if (Input.GetKeyUp(KeyCode.L))
-        {
-            LightOff();
-        }
+        //if(Input.GetKeyDown(KeyCode.L))
+        //{
+        //    LightOn();
+        //}
+        //if (Input.GetKeyUp(KeyCode.L))
+        //{
+        //    LightOff();
+        //}
     }
 
     public void LightOn()
     {
         cube.GetComponent<Renderer>().material.color = Color.blue;
+        SoundManager.Instance.PlaySound(SoundType.SE_GAKO);
     }
 
     public void LightOff()

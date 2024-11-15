@@ -27,25 +27,33 @@ public class MedalManager : MonoBehaviour
         }
     }
 
-    public void PayOut(FlagLottery.FlagType flagType)
+    public int PayOut(FlagLottery.FlagType flagType)
     {
+        int payout = 0;
+
         switch(flagType)
         {
             case FlagLottery.FlagType.E_FLAG_TYPE_CHERRY:
-                MedalNum += 2;
+                payout = 2;
                 break;
             case FlagLottery.FlagType.E_FLAG_TYPE_PIERROT:
-                MedalNum += 15;
+                payout = 15;
                 break;
             case FlagLottery.FlagType.E_FLAG_TYPE_BELL:
-                MedalNum += 10;
+                payout = 10;
                 break;
             case FlagLottery.FlagType.E_FLAG_TYPE_GRAPES:
-                MedalNum += 8;
+                payout= 8;
                 break;
             default:
                 break;
         }
+
+        AddMedal(payout);
+
+        SoundManager.Instance.PlaySound(SoundType.SE_PAYOUT, 1.0f, false, payout);
+
+        return payout;
     }
 
 

@@ -65,8 +65,8 @@ public partial class StateController : MonoBehaviour
     /// ボーナス成立フラグ
     /// </summary>
     private bool BonusLamp;
-
     private int BounsPayout;
+    private FlagLottery.FlagType BounsFlag;
 
     /// <summary>
     /// 子役成立フラグ
@@ -118,23 +118,32 @@ public partial class StateController : MonoBehaviour
         LotterResult = FlagLottery.FlagType.E_FLAG_TYPE_MAX;
         BonusLamp = false;
         BounsPayout = 0;
+        BounsFlag = FlagLottery.FlagType.E_FLAG_TYPE_MAX;
         FlagLamp = false;
         //Obj[(int)Slot_Parts.E_SLOT_PARTS_LEVER].GetComponent<FlagLottery>().Test();
         currentState.OnEnter(this, null);
     }
 
-
     private void Update()
     {
         currentState.OnUpdate(this);
+
+        if(Input.GetKeyDown(KeyCode.V))
+        {
+            Debug.Log("BIG確定");
+            Obj[(int)ObjSlotParts.E_SLOT_PARTS_LEVER].GetComponent<FlagLottery>().BigFlag = true;
+            SoundManager.Instance.PlaySound(SoundType.SE_GAKO, 1.0f, false, 3);
+        }
 
         if (Input.GetKeyDown(KeyCode.Return))
         {
             OnClick();
         }
 
-    }
+        Obj[(int)ObjSlotParts.E_SLOT_PARTS_REEL].GetComponent<ReelController>().GetRotationLayer(ReelController.ReelPosition.E_REEL_POS_L);
 
+
+    }
 
     // クリック時に呼ばれる
     public void OnClick()
@@ -187,6 +196,7 @@ public partial class StateController : MonoBehaviour
             if(owner.LotterResult == FlagLottery.FlagType.E_FLAG_TYPE_BIG || owner.LotterResult == FlagLottery.FlagType.E_FLAG_TYPE_REG)
             {
                 owner.BonusLamp = true;
+                owner.BounsFlag = owner.LotterResult;
                 Obj[(int)ObjSlotParts.E_SLOT_PARTS_BOUNSLAMP].GetComponent<BounsLampController>().LightOn();
             }
             // ステート変更します。次は stateLeverOn
@@ -198,6 +208,7 @@ public partial class StateController : MonoBehaviour
     {
         public override void OnEnter(StateController owner, StateBase prevState)
         {
+            SoundManager.Instance.PlaySound(SoundType.SE_WAIT, 1.0f , true);
             //Debug.Log(this.GetType().Name + " に移行しました");
         }
 
@@ -219,6 +230,8 @@ public partial class StateController : MonoBehaviour
 
         public override void OnExit(StateController owner, StateBase nextState)
         {
+            SoundManager.Instance.StopSound(SoundType.SE_WAIT);
+            SoundManager.Instance.PlaySound(SoundType.SE_ROLL);
             Obj[(int)ObjSlotParts.E_SLOT_PARTS_REEL].GetComponent<ReelController>().StartReel();
         }
 
@@ -323,9 +336,34 @@ public partial class StateController : MonoBehaviour
     {
         public override void OnEnter(StateController owner, StateBase prevState)
         {
+            int payout = 0;
             if(owner.FlagLamp)
             {
-                owner.transform.GetComponent<MedalManager>().PayOut(owner.LotterResult);
+                payout = owner.transform.GetComponent<MedalManager>().PayOut(owner.LotterResult);
+                if (owner.BounsFlag == FlagLottery.FlagType.E_FLAG_TYPE_BIG || owner.BounsFlag == FlagLottery.FlagType.E_FLAG_TYPE_REG)
+                {
+                    owner.BounsPayout += payout;
+                    Debug.Log("計" + owner.BounsPayout + "枚払い出し");
+                    int max = 0;
+                    switch(owner.BounsFlag)
+                    {
+                        case FlagLottery.FlagType.E_FLAG_TYPE_BIG:
+                            max = 266;
+                            break;
+                        case FlagLottery.FlagType.E_FLAG_TYPE_REG:
+                            max = 98;
+                            break;
+                        default:
+                            break;
+                    }
+                    if(owner.BounsPayout >= max)
+                    {//ボーナス終了
+                        Debug.Log("ボーナス終了");
+                        owner.BounsPayout = 0;
+                        owner.BounsFlag = FlagLottery.FlagType.E_FLAG_TYPE_MAX;
+                        Obj[(int)ObjSlotParts.E_SLOT_PARTS_LEVER].GetComponent<FlagLottery>().BounsEnd();
+                    }
+                }
             }
             //Debug.Log(this.GetType().Name + " に移行しました");
             //OnClick(owner);

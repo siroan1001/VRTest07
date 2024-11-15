@@ -49,8 +49,8 @@ namespace StarterAssets
                     move.x = move.y = 0.0f;
                 }
                 _input.MoveInput(move);
-                bool jump = Jump.GetStateDown(SteamVR_Input_Sources.LeftHand);
-                _input.JumpInput(jump);
+                //bool jump = Jump.GetStateDown(SteamVR_Input_Sources.LeftHand);
+                //_input.JumpInput(jump);
                 bool sprint = GrabGrip.GetState(SteamVR_Input_Sources.LeftHand);
                 _input.SprintInput(sprint);
 

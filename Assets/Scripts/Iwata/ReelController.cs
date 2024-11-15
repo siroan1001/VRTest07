@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 //using static UnityEditor.Experimental.GraphView.GraphView;
@@ -125,7 +127,8 @@ public class ReelController : MonoBehaviour
 
     public void StopReel(ReelPosition ReelPos)
     {
-        Reel[(int)ReelPos].transform.GetComponent<ReelRotation>().rotFlag = false;
+        //Reel[(int)ReelPos].transform.GetComponent<ReelRotation>().rotFlag = false;
+        SoundManager.Instance.PlaySound(SoundType.SE_PUSH);
     }
 
     /// <summary>
@@ -190,11 +193,24 @@ public class ReelController : MonoBehaviour
     {
         float currentAngle = Reel[(int)ReelPos].transform.eulerAngles.z;
 
+        float angle = currentAngle / LayerAngle;
         int layer = Mathf.FloorToInt(currentAngle / LayerAngle);
+        if (math.frac(angle) != 0.0f)
+        {
+            layer++;
+        }
+        if (layer >= LayerCount) layer = 0;
+
+        Debug.Log("停止マス番号：" + layer);
 
         return layer;
     }
 
+    /// <summary>
+    /// 停止目の結果を格納
+    /// </summary>
+    /// <param name="ReelPos"> 停止したリール </param>
+    /// <param name="layer"> 停止したコマ番号 </param>
     private void SetStopResult(ReelPosition ReelPos, int layer)
     {
         for (int i = 0; i < (int)ReelRow.E_REEL_ROW_MAX; i++)
@@ -412,7 +428,7 @@ public class ReelController : MonoBehaviour
             bool b = false;
             FlagLottery.FlagType flag = FlagLottery.FlagType.E_FLAG_TYPE_MAX;
 
-            Debug.Log("Line[" + i + "]の検証");
+            //Debug.Log("Line[" + i + "]の検証");
 
             for(int col = 0; col < (int)ReelRow.E_REEL_ROW_MAX; col++)
             {
@@ -420,7 +436,7 @@ public class ReelController : MonoBehaviour
                 {
                     if(line[row, col])
                     {
-                        Debug.Log("列：" + row + "　行：" + col + "　リールの値：" + StopResult[row, col] + "　成立役：" + flagType);
+                        //Debug.Log("列：" + row + "　行：" + col + "　リールの値：" + StopResult[row, col] + "　成立役：" + flagType);
                         if (StopResult[row, col] != flagType)
                         {
                             if (flag == FlagLottery.FlagType.E_FLAG_TYPE_MAX)
@@ -452,7 +468,7 @@ public class ReelController : MonoBehaviour
                 if (b) break;
                 if (col >= 2)
                 {
-                    Debug.Log("蹴った");
+                    //Debug.Log("蹴った");
                     num++;
                     int l = layer + num;
                     if (l >= 21)

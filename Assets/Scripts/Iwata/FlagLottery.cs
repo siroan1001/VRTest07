@@ -17,6 +17,7 @@ public class FlagLottery : MonoBehaviour
         E_FLAG_TYPE_MAX,
     }
 
+    //private static readonly int[] FlagValue = { 327, 655, 1310, 436, 436, 13943, 13107};
     private static readonly int[] FlagValue = { 327, 655, 1310, 436, 436, 13943, 13107};
     private static readonly int[] BounsValue = { 0, 0, 1310, 50, 50, 64126, 0};
 
@@ -27,6 +28,8 @@ public class FlagLottery : MonoBehaviour
     private bool BounsLock;     //ボーナス当選時再度抽選を行わないためのフラグ
     private FlagType BounsFlag;     //ボーナス当選時再度抽選を行わないためのフラグ
 
+    public bool BigFlag;
+
 
     // Start is called before the first frame update
     void Start()
@@ -34,6 +37,7 @@ public class FlagLottery : MonoBehaviour
         _randomNumber = 0;
         BounsLamp = false;
         BounsFlag = FlagType.E_FLAG_TYPE_MAX;
+        BigFlag = false;
     }
 
     public FlagType RandFlag()
@@ -43,9 +47,27 @@ public class FlagLottery : MonoBehaviour
         _randomNumber = Random.Range(0, 65535); // フラグ抽選
         FlagType type = FlagType.E_FLAG_TYPE_MAX;
 
-        for(int i = 0; i < FlagValue.Length; i++)
+        int[] val;
+        if (!BounsLamp)
         {
-            _randomNumber -= FlagValue[i];
+            val = FlagValue;
+            Debug.Log("通常抽選");
+            if(BigFlag)
+            {
+                BigFlag = false;
+                return FlagType.E_FLAG_TYPE_BIG;
+            }
+        }
+        else
+        {
+            val = BounsValue;
+            Debug.Log("ボーナス抽選");
+        }
+            
+
+        for(int i = 0; i < val.Length; i++)
+        {
+            _randomNumber -= val[i];
 
             if(_randomNumber <= 0)
             {
@@ -54,13 +76,12 @@ public class FlagLottery : MonoBehaviour
                 {
                     BounsFlag = type;
                 }
-                //return type;
+                return type;
             }
         }
 
         type = FlagType.E_FLAG_TYPE_MISS;
-        //return type;
-        return FlagType.E_FLAG_TYPE_REG;
+        return type;
     }
 
     public void Test()

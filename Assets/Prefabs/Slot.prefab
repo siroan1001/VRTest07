@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8323480465148402627}
   - component: {fileID: 6450793184511785284}
-  - component: {fileID: 2396882553483037128}
   m_Layer: 0
   m_Name: Reel_C
   m_TagString: Untagged
@@ -47,18 +46,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationTime: 0.754
---- !u!114 &2396882553483037128
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 29602003205137017}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 638518d421a8a0b408c99268007ba5e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1747110562177606759
 GameObject:
   m_ObjectHideFlags: 0
@@ -470,6 +457,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38e2f5999923fdb4ba978c28a418fdf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BigFlag: 0
 --- !u!1 &3276455993075232887
 GameObject:
   m_ObjectHideFlags: 0
@@ -734,6 +722,8 @@ GameObject:
   - component: {fileID: 4375791845836705851}
   - component: {fileID: 1513089151640510576}
   - component: {fileID: 1270301495089454082}
+  - component: {fileID: 532248064883744208}
+  - component: {fileID: 6089593415359419223}
   m_Layer: 0
   m_Name: Slot
   m_TagString: Untagged
@@ -789,6 +779,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59891c90bf4730640b101924e03baa29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &532248064883744208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5373507343467956349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36c8ddbb17f95dd42b37dbb3116e62ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6089593415359419223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5373507343467956349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6322371ed19bae142a00cd214178fd07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: 690000006a0000006b0000006c000000
+  moveValue: 0.05
 --- !u!1 &5677877684751991373
 GameObject:
   m_ObjectHideFlags: 0
@@ -867,7 +883,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6083241245957935628}
   - component: {fileID: 8385429091056251911}
-  - component: {fileID: 4290367006635310247}
   m_Layer: 0
   m_Name: Reel_R
   m_TagString: Untagged
@@ -904,18 +919,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationTime: 0.754
---- !u!114 &4290367006635310247
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7027857159010344292}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 638518d421a8a0b408c99268007ba5e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7217692769004881065
 GameObject:
   m_ObjectHideFlags: 0
@@ -959,7 +962,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6497378727608641383}
   - component: {fileID: 5603605106948974804}
-  - component: {fileID: 2491955750674267926}
   m_Layer: 0
   m_Name: Reel_L
   m_TagString: Untagged
@@ -996,18 +998,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationTime: 0.754
---- !u!114 &2491955750674267926
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7759912603724483375}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 638518d421a8a0b408c99268007ba5e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8297339287998772956
 GameObject:
   m_ObjectHideFlags: 0
