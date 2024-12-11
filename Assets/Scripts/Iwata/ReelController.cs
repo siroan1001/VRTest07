@@ -201,8 +201,6 @@ public class ReelController : MonoBehaviour
         }
         if (layer >= LayerCount) layer = 0;
 
-        Debug.Log("’â~ƒ}ƒX”Ô†F" + layer);
-
         return layer;
     }
 

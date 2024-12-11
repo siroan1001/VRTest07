@@ -46,19 +46,19 @@ public class SoundManager : MonoBehaviour
 
     public void LoadAudioSource(SoundType type, string path)
     {
-        Debug.Log(path);
+        //Debug.Log(path);
         AudioClip clip = Resources.Load<AudioClip>(path);
         if (clip != null)
         {
             AudioSource audioSource = gameObject.AddComponent<AudioSource>();
             audioSource.clip = clip;
             audioSources[type] = audioSource;
-            Debug.Log("ì«Ç›çûÇ›ê¨å˜");
+            //Debug.Log("ì«Ç›çûÇ›ê¨å˜");
         }
         else
         {
 
-            Debug.Log("ì«Ç›çûÇ›é∏îs");
+            //Debug.Log("ì«Ç›çûÇ›é∏îs");
         }
     }
 

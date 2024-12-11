@@ -174,7 +174,16 @@ public partial class StateController : MonoBehaviour
         public override void OnClick(StateController owner)
         {
             // ステート変更します。次は stateLeverOn
-            owner.ChangeState(stateLeverOn);
+            MedalManager script = owner.gameObject.GetComponent<MedalManager>();
+            int num = script.BetMedal();
+            Debug.Log("賭けメダル数" +  num);
+            if (num >= 3)
+            { 
+                owner.ChangeState(stateLeverOn);
+                owner.GetComponent<MedalManager>().ResetPayout();
+            }
+            else Debug.Log("メダルが足らない");
+
         }
 
     }
@@ -341,7 +350,7 @@ public partial class StateController : MonoBehaviour
             {
                 payout = owner.transform.GetComponent<MedalManager>().PayOut(owner.LotterResult);
                 if (owner.BounsFlag == FlagLottery.FlagType.E_FLAG_TYPE_BIG || owner.BounsFlag == FlagLottery.FlagType.E_FLAG_TYPE_REG)
-                {
+                {//ボーナス
                     owner.BounsPayout += payout;
                     Debug.Log("計" + owner.BounsPayout + "枚払い出し");
                     int max = 0;
@@ -376,6 +385,7 @@ public partial class StateController : MonoBehaviour
 
         public override void OnClick(StateController owner)
         {
+            owner.GetComponent<MedalManager>().ResetBet();
             // ステート変更します。次は stateLeverOn
             owner.ChangeState(stateMaxBet);
         }

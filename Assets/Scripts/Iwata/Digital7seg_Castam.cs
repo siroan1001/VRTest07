@@ -20,10 +20,10 @@ public class Digital7seg_Castam : MonoBehaviour
         SetNumber(Number);
     }
 
-    private void Update()
-    {
-        SetNumber(Number);
-    }
+    //private void Update()
+    //{
+    //    SetNumber(Number);
+    //}
 
     // 子オブジェクトをリストに追加
     void GetChildrens()
@@ -48,6 +48,8 @@ public class Digital7seg_Castam : MonoBehaviour
     {
         // 全セグメントを非アクティブ化
         InitSegment();
+
+        Number = number;
 
         // 対応するセグメントをアクティブ化
         int[] activeSegments = number switch

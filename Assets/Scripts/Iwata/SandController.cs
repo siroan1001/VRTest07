@@ -15,7 +15,11 @@ public class SandController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(Input.GetKeyDown(KeyCode.P))
+        {
+            Slot.GetComponent<MedalManager>().AddMedal(50);
+            Debug.Log("“ŠŽ‘");
+        }
     }
 
     private void OnTriggerEnter(Collider other)
